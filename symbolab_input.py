@@ -76,4 +76,4 @@ human_to_html('cos^{2}\\left(\\phi_{1}\\right) + sin^{2}\\left(\\phi_{1}\\right)
 cos%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)?or=input
 cos%5E%7B2%7D%5Cleft(%5Cphi%5F%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi%5F%7B1%7D%5Cright)'
 
-
+'cos%5E%7B2%7D%5Cleft(%5Cphi%5F%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi%5F%7B1%7D%5Cright)'
