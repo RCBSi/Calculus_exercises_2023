@@ -16,7 +16,13 @@ def human_to_html(o1):
     s1 = ''
     i0 = 0
     while i0 < len(o1):
-        if ord(o1[i0]) in range(ord('a'), ord('z')+1):
+        if o1[i0] == '(':
+            s1 += '%5Cleft('
+            i0 += 1
+        elif o1[i0] == ')':
+            s1 += '%5Cright('
+            i0 += 1
+        elif ord(o1[i0]) in range(ord('a'), ord('z')+1):
             s1 += o1[i0]
             i0 += 1
         elif ord(o1[i0]) in range(ord('A'), ord('Z')+1):
@@ -63,17 +69,20 @@ print('https://www.symbolab.com/solver/simplify%20'+human_to_html(' '+string1+'\
 #https://www.symbolab.com/solver/simplify_cos(%5Cphi_1)%20cos(%5Cphi_2)/simplify%20cos%5E%7B2%7D%5Cleft(x%5Cright)?or=input
 #https://www.symbolab.com/solver/simplify%20cos(%5Cphi%5F1)%20cos(%5Cphi%5F2)%20%5Cpartial%5F0%20%2B%20sin(%5Cphi%5F1)%20cos(%5Cphi%5F2)%
 
-https://www.symbolab.com/solver/step-by-step/simplify%20cos%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)?or=input
+#https://www.symbolab.com/solver/step-by-step/simplify%20cos%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)?or=input
 
-https://www.symbolab.com/solver/simplify%20%20cos%5Cleft(%5Cphi%5F1%5Cright(%20cos%5Cleft(%5Cphi%5F2%5Cright(%5
-https://www.symbolab.com/solver/simplify%20%20cos%5Cleft(%5Cphi_1%5Cright(%20cos%5Cleft(%5Cphi_2%5Cright(%5Cdfrac%7Bs_1%20c_2%7D%7Br%7D/simplify%20cos%5Cleft(phi_%7B1%7D%5Cright)?or=input
+#https://www.symbolab.com/solver/simplify%20%20cos%5Cleft(%5Cphi%5F1%5Cright(%20cos%5Cleft(%5Cphi%5F2%5Cright(%5
+#https://www.symbolab.com/solver/simplify%20%20cos%5Cleft(%5Cphi_1%5Cright(%20cos%5Cleft(%5Cphi_2%5Cright(%5Cdfrac%7Bs_1%20c_2%7D%7Br%7D/simplify%20cos%5Cleft(phi_%7B1%7D%5Cright)?or=input
 
 ''.join(html_to_human('https://www.symbolab.com/solver/step-by-step/simplify%20cos%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)?or=input'))
 
 'https://www.symbolab.com/solver/step-by-step/simplify cos^{2}\\left(\\phi_{1}\\right) + sin^{2}\\left(\\phi_{1}\\right)?or=input'
 
 human_to_html('cos^{2}\\left(\\phi_{1}\\right) + sin^{2}\\left(\\phi_{1}\\right)')
-cos%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)?or=input
-cos%5E%7B2%7D%5Cleft(%5Cphi%5F%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi%5F%7B1%7D%5Cright)'
+#cos%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi_%7B1%7D%5Cright)?or=input
+#cos%5E%7B2%7D%5Cleft(%5Cphi%5F%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi%5F%7B1%7D%5Cright)'
 
 'cos%5E%7B2%7D%5Cleft(%5Cphi%5F%7B1%7D%5Cright)%20%2B%20sin%5E%7B2%7D%5Cleft(%5Cphi%5F%7B1%7D%5Cright)'
+
+#print('https://www.symbolab.com/solver/step-by-step/%5Cdet%5Cbegin%7Bbmatrix%7D%20%5Ccos%5Cleft(phi%5Cright)%262%263%5C%5C%20%204%265%266%5C%5C%20%207%268%269%5Cend%7Bbmatrix%7D?or=input')
+#print('https://www.symbolab.com/solver/step-by-step/%5Cdet'+human_to_html('\\begin{pmatrix} \cos(\phi_1)  & - r \sin(\phi_1) & 0 \\ \sin(\phi_1) \cos(\phi_2) &  r \cos(\phi_1)  \cos(\phi_2) & -r \sin(\phi_1) \sin(\phi_2) \\  \sin(\phi_1) \sin(\phi_2) &  r \cos(\phi_1) \sin(\phi_2) &  r \sin(\phi_1) \cos(\phi_2) \\\end{pmatrix}') +'?or=sug')
