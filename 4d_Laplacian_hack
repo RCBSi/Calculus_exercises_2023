@@ -1,0 +1,101 @@
+import pandas, numpy
+Jacobian_string_1 = """c_1 & s_1 c_2 & s_1 s_2 c_3 & s_1 s_2 s_3
+-1 s_1 \dfrac{1}{r} & c_1 c_2 \dfrac{1}{r} & c_1 s_2 c_3 \dfrac{1}{r} & c_1 s_2 s_3 \dfrac{1}{r}
+0 & -1 s_2 \dfrac{1}{r} \dfrac{1}{s_1} & c_2 c_3 \dfrac{1}{r} \dfrac{1}{s_1} & c_2 s_3 \dfrac{1}{r} \dfrac{1}{s_1}
+0 & 0& -1 s_3 \dfrac{1}{r} \dfrac{1}{s_1} \dfrac{1}{s_2} & c_3 \dfrac{1}{r} \dfrac{1}{s_1} \dfrac{1}{s_2} """
+repdi = {'-':'-1 ', '\cos(\phi_1)':'c_1', '\sin(\phi_1)':'s_1', 'r ': 'r_0 ', 
+    '\cos(\phi_2)':'c_2','\sin(\phi_2)':'s_2', '\cdot':'',
+    '\dfrac{1}{r}':'r^{-1}_0', '\dfrac{1}{s_1}': 's^{-1}_1' , '\dfrac{1}{s_2}': 's^{-1}_2'}
+repdi_reverse = {repdi[x3]:x3 for x3 in repdi}
+Js2 = Jacobian_string_1
+for x in repdi:
+    Js2 = Js2.replace(x,repdi[x])
+#Js2
+JacobT = numpy.array([[x3.strip() for x3 in x2.split('&')] for x2 in Js2.split('\n')]).T
+#JacobT
+Jac_part = [[JacobT[i2][i3]+' z_'+str(i3) for i3 in range(4)] for i2 in range(4)]
+#Jac_part
+summands = []
+for row in Jac_part:
+    for x in row:
+        for y in row:
+            if x[0] != '0' and y[0] != '0':
+                summands.append(x + '(' + y)
+print(len(summands), 45)
+
+
+derivatives = {'s':'c', 'c':'-1 s', 'r^{-1}': '-1 r^{-2}', 's^{-1}' : 'c/s^2'}
+
+def resolve(summand):
+    if summand.count('+'):
+        return [resolve(a) for a in summand.split('+')]
+    if summand.count('(') == 0:
+        out_sum = sorted(summand.split(' '))
+        return ' '.join(out_sum)
+    else:
+        (s0,s1) = summand.split('(')
+        early_terms, d_term, differentiating_variable = s0[:-3], s0[-3:], s0[-1]
+        if early_terms[-2:] == 's^':
+            print('found it')
+        if s1.count(' '):
+            cutoff = s1.index(' ')
+            term, rest = s1[:cutoff], s1[cutoff+1:]
+        else:
+            term, rest = s1, ''
+        if term.count('_'):
+            term_variable = term[term.index('_')+1]
+            if term[0] == 'z': 
+                return resolve(s0+' '+s1)
+            if term_variable == differentiating_variable:
+                return resolve(early_terms+derivatives[
+                        term[:term.index('_')]
+                    ]+'_'+term_variable+' '+rest+'+'+early_terms+term+' '+d_term+'('+ rest)
+            else:
+                return resolve(early_terms+term+' '+d_term+'('+rest)
+        else:
+            return resolve(early_terms+term+' '+d_term+'('+rest)
+
+def flat_summands(s):
+    if isinstance(s, str):
+        return s
+    else:
+        return ' + '.join([flat_summands(y) for y in s])
+
+gather = {}
+for x in flat_summands([resolve(su) for su in summands]).split(' + '):
+    gather[x[x.index('z'):]] = ''
+for x in flat_summands([resolve(su) for su in summands]).split(' + '):
+    gather[x[x.index('z'):]] += x[:x.index('z')] + '+'
+for x in gather:
+    gather[x] = gather[x].replace(
+            '-1 -1 ',''
+        ).replace(
+            's_1 s_1','s^2_1'
+        ).replace(
+            's_2 s_2','s^2_2'
+        ).replace(
+            'c_1 c_1','c^2_1'
+        ).replace(
+            'c_2 c_2','c^2_2'
+        ).replace(
+            'r^{-1}_0','r^{-1}'
+        ).replace(
+            'r^{-2}_0','r^{-2}'
+        ).replace(
+            'c/s^2_1','c_1/s^2_1'
+        ).replace(
+            '+-1','-'
+        ).replace(
+            'r^{-1} r^{-1}','r^{-2}'
+        ).replace(
+            's^{-1}_1 s^{-1}_1','s^{-2}_1'
+        ).replace(
+            's^{-1}_1 s_1',''
+        )
+    gather[x] = gather[x][:-1]
+
+for x in gather:
+    print('$$('+gather[x]+')'+' '.join(
+        ['\dfrac{\partial}{\partial '+{'0':'r', '1':'\phi_1', '2':'\phi_2', '3':'\phi_3'}[x4]+'}' for x4 in [x3[-1] for x3 in x.split(' ')]]
+    )+'$$' 
+    )
