@@ -99,3 +99,6 @@ for x in gather:
         ['\dfrac{\partial}{\partial '+{'0':'r', '1':'\phi_1', '2':'\phi_2', '3':'\phi_3'}[x4]+'}' for x4 in [x3[-1] for x3 in x.split(' ')]]
     )+'$$' 
     )
+
+print(len(summands)) # 45 terms before product rule. 
+print(sum([gather[x].count('+')+1 for x in gather])) # 65 terms after product rule. 
